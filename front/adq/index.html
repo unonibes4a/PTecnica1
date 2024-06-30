@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adquisiciones</title>
+ <style>
+    body {
+  font-family: Arial, sans-serif;
+  width: 100%;
+  height: 100%;
+  background-color: #e2e2e2;
+}
+
+form {
+    margin-bottom: 20px;
+}
+
+label {
+    display: inline-block;
+    width: 150px;
+    margin-top: 10px;
+}
+
+input {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+button {
+    margin-top: 10px;
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+.containerBase{
+    width: 100%;
+    height: 100%;
+   
+    display: grid;
+      grid-template-columns: 1fr;
+      grid-template-rows: 1fr;
+      gap: 0px 0px;
+      grid-template-areas: "";
+      place-content: center;
+      place-items: center;
+
+}
+.containerBase2{
+    width: 100%;
+    height: 100%;
+    background-color: #a8a8a8; 
+ 
+ 
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      max-width: 800px;
+      margin: 0 auto;
+}
+.grid-item {
+ 
+      display: grid; 
+  grid-template-columns: 0.5fr 1.5fr; 
+  grid-template-rows: 1fr; 
+  gap: 0px 0px; 
+  grid-template-areas: 
+    ". ."; 
+    }
+ </style>
+ 
+ 
+</head>
+<body> 
+    <div class="containerBase"> 
+ 
+    <h1>Gestión de Adquisiciones</h1>
+    <form id="adquisicion-form" class="containerBase2">
+        <div class="grid-item">
+            <label for="presupuesto">Presupuesto:</label>
+            <input type="number" id="presupuesto" name="presupuesto" required><br>
+        </div>
+       
+        <div class="grid-item">
+              <label for="unidad">Unidad:</label>
+            <input type="text" id="unidad" name="unidad" required><br></div>
+      
+        <div class="grid-item">
+            <label for="tipo_bien_servicio">Tipo de Bien o Servicio:</label>
+            <input type="text" id="tipo_bien_servicio" name="tipo_bien_servicio" required><br>
+        </div>
+     
+        <div class="grid-item">
+            <label for="cantidad">Cantidad:</label>
+            <input type="number" id="cantidad" name="cantidad" required><br>
+        </div>
+        
+        <div class="grid-item">
+            <label for="valor_unitario">Valor Unitario:</label>
+            <input type="number" id="valor_unitario" name="valor_unitario" step="0.01" required><br>
+        </div>
+      
+        <div class="grid-item">
+            <label for="valor_total">Valor Total:</label>
+            <input type="number" id="valor_total" name="valor_total" step="0.01" required><br>
+        </div>
+      
+        <div class="grid-item">
+            <label for="fecha_adquisicion">Fecha de Adquisición:</label>
+            <input type="date" id="fecha_adquisicion" name="fecha_adquisicion" required><br>
+        </div>
+        
+        <div class="grid-item">
+            <label for="proveedor">Proveedor:</label>
+            <input type="text" id="proveedor" name="proveedor" required><br>
+        </div>
+   
+        <div class="grid-item">
+            <label for="documentacion">Documentación:</label>
+            <input type="text" id="documentacion" name="documentacion" required><br>
+        </div>
+     
+        <div class="grid-item"></div>
+        <button type="submit">Agregar Adquisición</button>
+    </form>
+
+    <h2>Lista de Adquisiciones</h2>
+    <ul id="adquisiciones-list"></ul>
+ 
+</div>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <!--   <script src="app.js"></script>
+ -->
+    <script>
+document.addEventListener("DOMContentLoaded", function () {
+    const form = document.getElementById("adquisicion-form");
+    const adquisicionesList = document.getElementById("adquisiciones-list");
+
+    // Función para obtener adquisiciones
+    function fetchAdquisiciones() {
+        axios.get("http://localhost:8000/api/adquisiciones/")
+            .then(response => {
+                const adquisiciones = response.data;
+                adquisicionesList.innerHTML = "";
+                adquisiciones.forEach(adquisicion => {
+                    const li = document.createElement("li");
+                    li.textContent = `${adquisicion.tipo_bien_servicio} - ${adquisicion.proveedor}`;
+                    adquisicionesList.appendChild(li);
+                });
+            })
+            .catch(error => {
+                console.error("Error fetching adquisiciones:", error);
+            });
+    }
+
+    // Función para agregar una nueva adquisición
+    form.addEventListener("submit", function (event) {
+        event.preventDefault();
+
+        const nuevaAdquisicion = {
+            presupuesto: form.presupuesto.value,
+            unidad: form.unidad.value,
+            tipo_bien_servicio: form.tipo_bien_servicio.value,
+            cantidad: form.cantidad.value,
+            valor_unitario: form.valor_unitario.value,
+            valor_total: form.valor_total.value,
+            fecha_adquisicion: form.fecha_adquisicion.value,
+            proveedor: form.proveedor.value,
+            documentacion: form.documentacion.value
+        };
+
+        axios.post("http://localhost:8000/api/adquisiciones/", nuevaAdquisicion)
+            .then(response => {
+         
+                console.log(response,'response');
+            })
+            .catch(error => {
+                console.error("Error adding adquisicion:", error);
+            });
+    });
+ 
+});
+
+         
+        let ruta1='https://g1cm6ndg-8000.use.devtunnels.ms/';
+fetch(ruta1+'api/adquisiciones/')
+    .then(response => {
+        console.log(response,'response');
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log('Datos recibidos:', data);
+ 
+    })
+    .catch(error => {
+        console.error('Hubo un problema con la solicitud fetch:', error);
+    });
+
+    </script>
+</body>
+</html>
