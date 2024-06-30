@@ -1,0 +1,49 @@
+fornt
+
+
+0)  si usas esta las demas no valen  python live.py  
+
+---
+
+la otra opción
+1) usar vs Code
+2 installar plugin extenciones  live serve 
+3) click derecho  index.html open live serve 
+
+backend Instalcion  y run 
+
+
+ 
+Comandos para configurar y ejecutar tu proyecto Django
+Navega hasta el directorio del proyecto:
+
+bash
+Copiar código
+cd D:\descargaborarr\PTecnica1\pruebatecnca1\adquisiciones
+Crea y activa un entorno virtual (opcional, pero recomendado):
+
+bash
+Copiar código
+python -m venv env
+.\env\Scripts\activate
+Instala las dependencias del proyecto:
+
+bash
+Copiar código
+pip install -r requirements.txt
+Realiza migraciones de la base de datos:
+
+bash
+Copiar código
+python manage.py makemigrations
+python manage.py migrate
+Crea un superusuario (opcional, pero recomendado para acceder al admin de Django):
+
+bash
+Copiar código
+python manage.py createsuperuser
+Ejecuta el servidor de desarrollo:
+
+bash
+Copiar código
+python manage.py runserver 
